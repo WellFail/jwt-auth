@@ -1,0 +1,33 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev src/index.ts",
+    "migrate": "npm run migrate:save && npm run migrate:up",
+    "migrate:save": "npx prisma migrate save --experimental --name='auto'",
+    "migrate:up": "npx prisma migrate up --experimental --auto-approve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "2.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "nexus-prisma": "0.14.0",
+    "dotenv": "^8.2.0",
+    "@nexus/schema": "0.14.0",
+    "apollo-server-express": "^2.14.3"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.0.0-pre.44",
+    "ts-node": "^8.10.2",
+    "bcrypt": "^4.0.1",
+    "typescript": "^3.9.5",
+    "@prisma/cli": "2.0.0",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/bcrypt": "^3.0.0",
+    "@types/node": "^14.0.1"
+  }
+}
