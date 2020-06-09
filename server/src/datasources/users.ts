@@ -1,13 +1,11 @@
 import { DataSourceConfig } from 'apollo-datasource';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
 import { UserInputError, ForbiddenError } from 'apollo-server-express';
 import { PrismaClient, User } from '@prisma/client';
-import { Maybe } from '@nexus/schema/dist/core';
 
 import { Context } from '../graphql/context';
-
+import { createToken } from '../integrations/jwt';
 
 export class UsersAPI {
   private readonly jwtSecret = process.env.JWT_SECRET || 'secret';
@@ -17,16 +15,6 @@ export class UsersAPI {
   public initialize(config: DataSourceConfig<Context>) {
     this.context = config.context;
     this.prisma = config.context.prisma;
-  }
-
-  getToken(user: User): string {
-    return jwt.sign({
-      email: user.email,
-      sub: user.id,
-      iss: 'https://auth.example.com/basic',
-    }, this.jwtSecret, {
-      algorithm: 'HS256',
-    });
   }
 
   public async findUserByToken(authorization: string): Promise<User | null> {
@@ -55,7 +43,7 @@ export class UsersAPI {
       },
     });
 
-    const token = this.getToken(user);
+    const token = createToken(user);
 
     return { token, user };
   }
@@ -67,7 +55,7 @@ export class UsersAPI {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) throw new ForbiddenError('Incorrect email or password');
 
-    const token = this.getToken(user);
+    const token = createToken(user);
 
     return { token, user };
   }
