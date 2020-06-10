@@ -5,5 +5,9 @@ Server:
 * Prisma
 * TypeScript
 
-Client:
-* ApolloClient
+
+
+
+Auth schema:
+
+![alt text](https://hasura.io/blog/content/images/2019/09/Screen-Shot-2019-09-06-at-11.46.17.png "qwe")
